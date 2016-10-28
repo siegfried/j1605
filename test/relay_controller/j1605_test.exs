@@ -5,7 +5,7 @@ defmodule RelayController.J1605Test do
 
   describe "RelayController.J1605.init/1" do
     test "raises match error if the device is not ready" do
-      assert J1605.init(nil) == {:stop, :bad_socket}
+      assert J1605.init(nil) == {:stop, :bad_args}
     end
 
     test "prepares state if the device is ready" do
@@ -17,9 +17,10 @@ defmodule RelayController.J1605Test do
 
       Process.sleep(1000)
 
-      {:ok, socket} = :gen_tcp.connect address, port, [:binary]
-
-      assert J1605.init(socket) == {:ok, %RelayController.J1605{socket: socket, relays: nil, subscribers: []}}
+      {:ok, state} = J1605.init({address, port})
+      assert state.relays == nil
+      assert is_port(state.socket)
+      assert state.subscribers == []
     end
   end
 

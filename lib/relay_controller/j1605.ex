@@ -5,17 +5,16 @@ defmodule RelayController.J1605 do
   defstruct [:socket, relays: nil, subscribers: []]
 
   def start_link do
-    {address, port} = Application.get_env(:relay_controller, :j1605)
-    {:ok, socket} = :gen_tcp.connect(address, port, [:binary, active: true])
-    GenServer.start_link(__MODULE__, socket, name: __MODULE__)
+    GenServer.start_link(__MODULE__, Application.get_env(:relay_controller, :j1605), name: __MODULE__)
   end
 
-  def init(socket) when is_port(socket) do
+  def init({address, port}) do
+    {:ok, socket} = :gen_tcp.connect(address, port, [:binary, active: true])
     {:ok, %RelayController.J1605{socket: socket, relays: nil, subscribers: []}}
   end
 
   def init(_) do
-    {:stop, :bad_socket}
+    {:stop, :bad_args}
   end
 
   def handle_call(:subscribe, from, state = %{subscribers: subscribers}) do
