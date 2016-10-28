@@ -26,11 +26,11 @@ defmodule RelayController.J1605Test do
 
   describe "RelayController.J1605.handle_call/3" do
     test "adds subscriber if it is not subscribed" do
-      assert J1605.handle_call(:subscribe, self, %{subscribers: []}) == {:reply, :ok, %{subscribers: [self]} }
+      assert J1605.handle_call(:subscribe, {self, :nothing}, %{subscribers: []}) == {:reply, :ok, %{subscribers: [self]} }
     end
 
     test "does not add subscriber if it is subscribed" do
-      assert J1605.handle_call(:subscribe, self, %{subscribers: [self]}) == {:reply, :ok, %{subscribers: [self]} }
+      assert J1605.handle_call(:subscribe, {self, :nothing}, %{subscribers: [self]}) == {:reply, :ok, %{subscribers: [self]} }
     end
   end
 

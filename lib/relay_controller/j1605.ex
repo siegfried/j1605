@@ -17,11 +17,11 @@ defmodule RelayController.J1605 do
     {:stop, :bad_args}
   end
 
-  def handle_call(:subscribe, from, state = %{subscribers: subscribers}) do
-    if Enum.member?(subscribers, from) do
+  def handle_call(:subscribe, {pid, _}, state = %{subscribers: subscribers}) do
+    if Enum.member?(subscribers, pid) do
       {:reply, :ok, state}
     else
-      {:reply, :ok, %{state | subscribers: [from | subscribers]}}
+      {:reply, :ok, %{state | subscribers: [pid | subscribers]}}
     end
   end
 
