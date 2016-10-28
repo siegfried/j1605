@@ -98,11 +98,5 @@ defmodule RelayController.J1605Test do
         J1605.handle_info({:tcp, nil, <<0x1, 0x12, 0x34, 0x5, 0x5, 0x0, 0x0, 0x20, 0x3, 0x1, 0x0, 0x0>>}, %RelayController.J1605{socket: socket})
       end
     end
-
-    test "removes subscribers not alive", %{socket: socket} do
-      dead_subscriber = spawn fn -> true end
-      Process.exit dead_subscriber, :kill
-      assert J1605.handle_info({:tcp, socket, <<0x1, 0x12, 0x34, 0x5, 0x5, 0x0, 0x0, 0x20, 0x3, 0x1, 0x0, 0x0>>}, %RelayController.J1605{socket: socket, subscribers: [dead_subscriber]}) == {:noreply, %RelayController.J1605{relays: {true, true, false, false, false, false, false, false, true, false, false, false, false, false, false, false}, socket: socket, subscribers: []}}
-    end
   end
 end

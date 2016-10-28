@@ -54,11 +54,8 @@ defmodule RelayController.J1605 do
     case message do
       <<0x01, _, _, _, 0x05, _, _, 0x20, relay_bits :: little-integer-size(16), 0x00, 0x00>> ->
         relays = <<relay_bits :: size(16)>> |> relay_bits_to_list |> Enum.reverse |> List.to_tuple
-        alive_subscribers = for subscriber <- subscribers, Process.alive?(subscriber) do
-          send subscriber, {:j1605, relays}
-          subscriber
-        end
-        {:noreply, %{state | relays: relays, subscribers: alive_subscribers}}
+        Enum.each subscribers, &(send &1, {:j1605, relays})
+        {:noreply, %{state | relays: relays}}
       _ ->
         {:noreply, state}
     end
