@@ -7,11 +7,12 @@ defmodule RelayController do
     import Supervisor.Spec, warn: false
 
     # Define workers and child supervisors to be supervised
-    children = [
-      # Starts a worker by calling: RelayController.Worker.start_link(arg1, arg2, arg3)
-      # worker(RelayController.Worker, [arg1, arg2, arg3]),
-      worker(RelayController.J1605, [])
-    ]
+    children = case Mix.env do
+                 :test -> []
+                 _ -> [
+                   worker(RelayController.J1605, [])
+                 ]
+               end
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
