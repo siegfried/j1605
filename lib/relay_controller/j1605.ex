@@ -10,7 +10,7 @@ defmodule RelayController.J1605 do
 
   def init({address, port}) do
     {:ok, socket} = :gen_tcp.connect(address, port, [:binary, active: true])
-    {:ok, %RelayController.J1605{socket: socket, relays: nil, subscribers: []}}
+    {:ok, %__MODULE__{socket: socket, relays: nil, subscribers: []}}
   end
 
   def init(_) do
