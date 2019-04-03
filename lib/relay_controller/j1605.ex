@@ -8,6 +8,7 @@ defmodule RelayController.J1605 do
     GenServer.start_link(__MODULE__, args, opts)
   end
 
+  @impl true
   def init({address, port}) do
     with {:ok, socket} <- :gen_tcp.connect(address, port, [:binary, active: true]) do
       {:ok, %__MODULE__{socket: socket, relays: nil, subscribers: []}}
@@ -20,6 +21,7 @@ defmodule RelayController.J1605 do
     {:stop, :bad_args}
   end
 
+  @impl true
   def handle_call(:subscribe, {pid, _}, state = %{subscribers: subscribers}) do
     if Enum.member?(subscribers, pid) do
       {:reply, :ok, state}
@@ -28,6 +30,7 @@ defmodule RelayController.J1605 do
     end
   end
 
+  @impl true
   def handle_cast(request, state = %{socket: socket}) do
     with :ok <- perform(socket, request) do
       {:noreply, state}
@@ -58,6 +61,7 @@ defmodule RelayController.J1605 do
     :gen_tcp.send(socket, <<0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00>>)
   end
 
+  @impl true
   def handle_info(
         {:tcp, socket, message},
         state = %{socket: state_socket, subscribers: subscribers}
