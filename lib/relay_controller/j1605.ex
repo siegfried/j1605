@@ -4,13 +4,16 @@ defmodule RelayController.J1605 do
   @enforce_keys [:socket]
   defstruct [:socket, relays: nil, subscribers: []]
 
-  def start_link do
-    GenServer.start_link(__MODULE__, Application.get_env(:relay_controller, :j1605), name: __MODULE__)
+  def start_link(args, opts \\ []) do
+    GenServer.start_link(__MODULE__, args, opts)
   end
 
   def init({address, port}) do
-    {:ok, socket} = :gen_tcp.connect(address, port, [:binary, active: true])
-    {:ok, %__MODULE__{socket: socket, relays: nil, subscribers: []}}
+    with {:ok, socket} <- :gen_tcp.connect(address, port, [:binary, active: true]) do
+      {:ok, %__MODULE__{socket: socket, relays: nil, subscribers: []}}
+    else
+      {:error, reason} -> {:stop, reason}
+    end
   end
 
   def init(_) do
@@ -26,8 +29,9 @@ defmodule RelayController.J1605 do
   end
 
   def handle_cast(request, state = %{socket: socket}) do
-    case perform(socket, request) do
-      :ok -> {:noreply, state}
+    with :ok <- perform(socket, request) do
+      {:noreply, state}
+    else
       {:error, reason} -> {:stop, reason, %{state | socket: nil}}
     end
   end

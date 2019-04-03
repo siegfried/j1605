@@ -1,6 +1,8 @@
 defmodule RelayController do
   use Application
 
+  alias RelayController.J1605
+
   # See http://elixir-lang.org/docs/stable/elixir/Application.html
   # for more information on OTP Applications
   def start(_type, _args) do
@@ -10,7 +12,7 @@ defmodule RelayController do
     children = case Mix.env do
                  :test -> []
                  _ -> [
-                   worker(RelayController.J1605, [])
+                   worker(J1605, [Application.get_env(:relay_controller, :j1605), [name: J1605]])
                  ]
                end
 
