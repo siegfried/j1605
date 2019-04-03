@@ -9,8 +9,7 @@ defmodule RelayController.J1605Test do
     end
 
     test "prepares state if the device is ready" do
-      {address, port} = Application.get_env(:relay_controller, :j1605)
-      {:ok, listen_socket} = :gen_tcp.listen(port, [:binary])
+      {:ok, listen_socket} = :gen_tcp.listen(2000, [:binary])
 
       spawn_link(fn ->
         {:ok, _} = :gen_tcp.accept(listen_socket)
@@ -18,7 +17,7 @@ defmodule RelayController.J1605Test do
 
       Process.sleep(1000)
 
-      {:ok, state} = J1605.init({address, port})
+      {:ok, state} = J1605.init({{127, 0, 0, 1}, 2000})
       assert state.relays == nil
       assert is_port(state.socket)
       assert state.subscribers == []
@@ -39,7 +38,7 @@ defmodule RelayController.J1605Test do
 
   describe "RelayController.J1605.handle_cast/2" do
     setup do
-      {address, _} = Application.get_env(:relay_controller, :j1605)
+      address = {127, 0, 0, 1}
       port = Enum.random(2500..3000)
       {:ok, listen_socket} = :gen_tcp.listen(port, [:binary])
 
@@ -82,7 +81,7 @@ defmodule RelayController.J1605Test do
 
   describe "RelayController.J1605.handle_info/2" do
     setup do
-      {address, _} = Application.get_env(:relay_controller, :j1605)
+      address = {127, 0, 0, 1}
       port = Enum.random(3000..3500)
       {:ok, listen_socket} = :gen_tcp.listen(port, [:binary])
 

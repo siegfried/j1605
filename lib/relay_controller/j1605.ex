@@ -4,8 +4,8 @@ defmodule RelayController.J1605 do
   @enforce_keys [:socket]
   defstruct [:socket, relays: nil, subscribers: []]
 
-  def start_link(args, opts \\ []) do
-    GenServer.start_link(__MODULE__, args, opts)
+  def start_link(arg) do
+    GenServer.start_link(__MODULE__, arg, name: __MODULE__)
   end
 
   @impl true
@@ -13,7 +13,7 @@ defmodule RelayController.J1605 do
     with {:ok, socket} <- :gen_tcp.connect(address, port, [:binary, active: true]) do
       {:ok, %__MODULE__{socket: socket, relays: nil, subscribers: []}}
     else
-      {:error, reason} -> {:stop, reason}
+      error -> {:stop, error}
     end
   end
 
