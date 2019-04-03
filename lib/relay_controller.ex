@@ -9,12 +9,16 @@ defmodule RelayController do
     import Supervisor.Spec, warn: false
 
     # Define workers and child supervisors to be supervised
-    children = case Mix.env do
-                 :test -> []
-                 _ -> [
-                   worker(J1605, [Application.get_env(:relay_controller, :j1605), [name: J1605]])
-                 ]
-               end
+    children =
+      case Mix.env() do
+        :test ->
+          []
+
+        _ ->
+          [
+            worker(J1605, [Application.get_env(:relay_controller, :j1605), [name: J1605]])
+          ]
+      end
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
     # for other strategies and supported options
