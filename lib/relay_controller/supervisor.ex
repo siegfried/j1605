@@ -19,7 +19,13 @@ defmodule RelayController.Supervisor do
                {:ok, address} <- Access.fetch(config, :address),
                {:ok, port} <- Access.fetch(config, :port),
                {:ok, address} <- parse_ipv4_address(address) do
-            [{J1605, {address, port}}]
+            [
+              {J1605, {address, port}},
+              {Registry,
+               keys: :duplicate,
+               name: RelayController.Registry,
+               partitions: System.schedulers_online()}
+            ]
           end
       end
 

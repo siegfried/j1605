@@ -20,19 +20,6 @@ defmodule RelayController.J1605Test do
       {:ok, state} = J1605.init({{127, 0, 0, 1}, 2000})
       assert state.relays == nil
       assert is_port(state.socket)
-      assert state.subscribers == []
-    end
-  end
-
-  describe "RelayController.J1605.handle_call/3" do
-    test "adds subscriber if it is not subscribed" do
-      assert J1605.handle_call(:subscribe, {self, :nothing}, %{subscribers: []}) ==
-               {:reply, :ok, %{subscribers: [self]}}
-    end
-
-    test "does not add subscriber if it is subscribed" do
-      assert J1605.handle_call(:subscribe, {self, :nothing}, %{subscribers: [self]}) ==
-               {:reply, :ok, %{subscribers: [self]}}
     end
   end
 
@@ -97,31 +84,38 @@ defmodule RelayController.J1605Test do
     end
 
     test "updates relay states", %{socket: socket} do
+      Registry.start_link(keys: :duplicate, name: RelayController.Registry)
+      Registry.register(RelayController.Registry, "subscribers", nil)
+
       assert J1605.handle_info(
                {:tcp, socket, <<0x1, 0x12, 0x34, 0x5, 0x5, 0x0, 0x0, 0x20, 0x3, 0x1, 0x0, 0x0>>},
-               %J1605{socket: socket, subscribers: [self]}
+               %J1605{socket: socket}
              ) ==
                {:noreply,
                 %J1605{
                   relays:
                     {true, true, false, false, false, false, false, false, true, false, false,
                      false, false, false, false, false},
-                  socket: socket,
-                  subscribers: [self]
+                  socket: socket
                 }}
+
+      assert_received {:j1605, {true, true, false, false, false, false, false, false, true, false, false,
+                                false, false, false, false, false}}
 
       assert J1605.handle_info(
                {:tcp, socket, <<0x1, 0x0, 0x0, 0x1, 0x5, 0x0, 0x24, 0x20, 0x3, 0x1, 0x0, 0x0>>},
-               %J1605{socket: socket, subscribers: [self]}
+               %J1605{socket: socket}
              ) ==
                {:noreply,
                 %J1605{
                   relays:
                     {true, true, false, false, false, false, false, false, true, false, false,
                      false, false, false, false, false},
-                  socket: socket,
-                  subscribers: [self]
+                  socket: socket
                 }}
+
+      assert_received {:j1605, {true, true, false, false, false, false, false, false, true, false, false,
+                                false, false, false, false, false}}
     end
 
     test "raises error if it is from unknown socket", %{socket: socket} do

@@ -2,7 +2,7 @@ defmodule RelayController.J1605 do
   use GenServer
 
   @enforce_keys [:socket]
-  defstruct [:socket, relays: nil, subscribers: []]
+  defstruct [:socket, relays: nil]
 
   def start_link(arg) do
     GenServer.start_link(__MODULE__, arg, name: __MODULE__)
@@ -11,7 +11,7 @@ defmodule RelayController.J1605 do
   @impl true
   def init({address, port}) do
     with {:ok, socket} <- :gen_tcp.connect(address, port, [:binary, active: true]) do
-      {:ok, %__MODULE__{socket: socket, relays: nil, subscribers: []}}
+      {:ok, %__MODULE__{socket: socket, relays: nil}}
     else
       error -> {:stop, error}
     end
@@ -19,15 +19,6 @@ defmodule RelayController.J1605 do
 
   def init(_) do
     {:stop, :bad_args}
-  end
-
-  @impl true
-  def handle_call(:subscribe, {pid, _}, state = %{subscribers: subscribers}) do
-    if Enum.member?(subscribers, pid) do
-      {:reply, :ok, state}
-    else
-      {:reply, :ok, %{state | subscribers: [pid | subscribers]}}
-    end
   end
 
   @impl true
@@ -64,7 +55,7 @@ defmodule RelayController.J1605 do
   @impl true
   def handle_info(
         {:tcp, socket, message},
-        state = %{socket: state_socket, subscribers: subscribers}
+        state = %__MODULE__{socket: state_socket}
       )
       when socket === state_socket do
     case message do
@@ -72,7 +63,10 @@ defmodule RelayController.J1605 do
         relays =
           <<relay_bits::size(16)>> |> relay_bits_to_list |> Enum.reverse() |> List.to_tuple()
 
-        Enum.each(subscribers, &send(&1, {:j1605, relays}))
+        Registry.dispatch(RelayController.Registry, "subscribers", fn entries ->
+          Enum.each(entries, fn {pid, _} -> send(pid, {:j1605, relays}) end)
+        end)
+
         {:noreply, %{state | relays: relays}}
 
       _ ->
