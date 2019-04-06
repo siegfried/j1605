@@ -17,6 +17,18 @@ Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_do
 and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
 be found at [https://hexdocs.pm/j1605](https://hexdocs.pm/j1605).
 
+## Configuration
+
+```elixir
+use Mix.Config
+
+config :j1605,
+  device: [
+    address: "192.168.1.250",
+    port: 2000
+  ]
+```
+
 ## Usage
 
 1. Subscribe the switch events:
