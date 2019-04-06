@@ -1,6 +1,6 @@
 # J1605
 
-**TODO: Add description**
+J1605 is a switch hub with 16 relays can be controlled on TCP.
 
 ## Installation
 
