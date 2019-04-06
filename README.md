@@ -22,3 +22,8 @@ If [available in Hex](https://hex.pm/docs/publish), the package can be installed
     end
     ```
 
+  3. Subscribe the switch events:
+
+    ```elixir
+    Registry.register(J1605.Registry, "subscribers", nil)
+    ```
