@@ -1,4 +1,4 @@
-defmodule RelayController.Device do
+defmodule J1605.Device do
   use GenServer
 
   @enforce_keys [:socket]
@@ -63,7 +63,7 @@ defmodule RelayController.Device do
         relays =
           <<relay_bits::size(16)>> |> relay_bits_to_list |> Enum.reverse() |> List.to_tuple()
 
-        Registry.dispatch(RelayController.Registry, "subscribers", fn entries ->
+        Registry.dispatch(J1605.Registry, "subscribers", fn entries ->
           Enum.each(entries, fn {pid, _} -> send(pid, {:device, relays}) end)
         end)
 

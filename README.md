@@ -1,4 +1,4 @@
-# RelayController
+# J1605
 
 **TODO: Add description**
 
@@ -6,19 +6,19 @@
 
 If [available in Hex](https://hex.pm/docs/publish), the package can be installed as:
 
-  1. Add `relay_controller` to your list of dependencies in `mix.exs`:
+  1. Add `j1605` to your list of dependencies in `mix.exs`:
 
     ```elixir
     def deps do
-      [{:relay_controller, "~> 0.1.0"}]
+      [{:j1605, "~> 0.1.0"}]
     end
     ```
 
-  2. Ensure `relay_controller` is started before your application:
+  2. Ensure `j1605` is started before your application:
 
     ```elixir
     def application do
-      [applications: [:relay_controller]]
+      [applications: [:j1605]]
     end
     ```
 

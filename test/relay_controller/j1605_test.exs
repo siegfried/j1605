@@ -1,9 +1,9 @@
-defmodule RelayController.DeviceTest do
+defmodule J1605.DeviceTest do
   use ExUnit.Case, async: true
 
-  alias RelayController.Device
+  alias J1605.Device
 
-  describe "RelayController.Device.init/1" do
+  describe "J1605.Device.init/1" do
     test "raises match error if the device is not ready" do
       assert Device.init(nil) == {:stop, :bad_args}
     end
@@ -23,7 +23,7 @@ defmodule RelayController.DeviceTest do
     end
   end
 
-  describe "RelayController.Device.handle_cast/2" do
+  describe "J1605.Device.handle_cast/2" do
     setup do
       address = {127, 0, 0, 1}
       port = Enum.random(2500..3000)
@@ -66,7 +66,7 @@ defmodule RelayController.DeviceTest do
     end
   end
 
-  describe "RelayController.Device.handle_info/2" do
+  describe "J1605.Device.handle_info/2" do
     setup do
       address = {127, 0, 0, 1}
       port = Enum.random(3000..3500)
@@ -84,8 +84,8 @@ defmodule RelayController.DeviceTest do
     end
 
     test "updates relay states", %{socket: socket} do
-      Registry.start_link(keys: :duplicate, name: RelayController.Registry)
-      Registry.register(RelayController.Registry, "subscribers", nil)
+      Registry.start_link(keys: :duplicate, name: J1605.Registry)
+      Registry.register(J1605.Registry, "subscribers", nil)
 
       assert Device.handle_info(
                {:tcp, socket, <<0x1, 0x12, 0x34, 0x5, 0x5, 0x0, 0x0, 0x20, 0x3, 0x1, 0x0, 0x0>>},

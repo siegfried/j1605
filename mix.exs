@@ -1,9 +1,9 @@
-defmodule RelayController.Mixfile do
+defmodule J1605.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :relay_controller,
+      app: :j1605,
       version: "0.1.0",
       elixir: "~> 1.3",
       build_embedded: Mix.env() == :prod,
@@ -16,7 +16,7 @@ defmodule RelayController.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [applications: [:logger], mod: {RelayController, []}]
+    [applications: [:logger], mod: {J1605, []}]
   end
 
   # Dependencies can be Hex packages:

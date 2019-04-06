@@ -10,11 +10,11 @@ use Mix.Config
 
 # You can configure for your application as:
 #
-#     config :relay_controller, key: :value
+#     config :j1605, key: :value
 #
 # And access this configuration in your application as:
 #
-#     Application.get_env(:relay_controller, :key)
+#     Application.get_env(:j1605, :key)
 #
 # Or configure a 3rd-party app:
 #

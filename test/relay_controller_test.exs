@@ -1,6 +1,6 @@
-defmodule RelayControllerTest do
+defmodule J1605Test do
   use ExUnit.Case
-  doctest RelayController
+  doctest J1605
 
   test "the truth" do
     assert 1 + 1 == 2

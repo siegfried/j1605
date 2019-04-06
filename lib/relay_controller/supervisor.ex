@@ -1,7 +1,7 @@
-defmodule RelayController.Supervisor do
+defmodule J1605.Supervisor do
   use Supervisor
 
-  alias RelayController.Device
+  alias J1605.Device
 
   def start_link(arg) do
     Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
@@ -23,7 +23,7 @@ defmodule RelayController.Supervisor do
               {Device, {address, port}},
               {Registry,
                keys: :duplicate,
-               name: RelayController.Registry,
+               name: J1605.Registry,
                partitions: System.schedulers_online()}
             ]
           end

@@ -1,9 +1,9 @@
-defmodule RelayController do
+defmodule J1605 do
   use Application
 
   def start(_type, _args) do
-    :relay_controller
+    :j1605
     |> Application.get_all_env()
-    |> RelayController.Supervisor.start_link()
+    |> J1605.Supervisor.start_link()
   end
 end
