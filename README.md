@@ -34,7 +34,7 @@ config :j1605,
 1. Subscribe the switch events:
 
 ```elixir
-Registry.register(J1605.Registry, "subscribers", nil)
+J1605.subscribe()
 ```
 
 2. Receive the switch states:

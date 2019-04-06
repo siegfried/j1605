@@ -3,6 +3,10 @@ defmodule J1605 do
 
   alias J1605.Device
 
+  def subscribe do
+    Registry.register(J1605.Registry, "subscribers", nil)
+  end
+
   def turn_on(number) do
     GenServer.cast(Device, {true, number})
   end
