@@ -22,9 +22,7 @@ defmodule J1605.Supervisor do
             [
               {Device, {address, port}},
               {Registry,
-               keys: :duplicate,
-               name: J1605.Registry,
-               partitions: System.schedulers_online()}
+               keys: :duplicate, name: J1605.Registry, partitions: System.schedulers_online()}
             ]
           end
       end

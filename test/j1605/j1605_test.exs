@@ -99,8 +99,9 @@ defmodule J1605.DeviceTest do
                   socket: socket
                 }}
 
-      assert_received {:device, {true, true, false, false, false, false, false, false, true, false, false,
-                                false, false, false, false, false}}
+      assert_received {:device,
+                       {true, true, false, false, false, false, false, false, true, false, false,
+                        false, false, false, false, false}}
 
       assert Device.handle_info(
                {:tcp, socket, <<0x1, 0x0, 0x0, 0x1, 0x5, 0x0, 0x24, 0x20, 0x3, 0x1, 0x0, 0x0>>},
@@ -114,8 +115,9 @@ defmodule J1605.DeviceTest do
                   socket: socket
                 }}
 
-      assert_received {:device, {true, true, false, false, false, false, false, false, true, false, false,
-                                false, false, false, false, false}}
+      assert_received {:device,
+                       {true, true, false, false, false, false, false, false, true, false, false,
+                        false, false, false, false, false}}
     end
 
     test "raises error if it is from unknown socket", %{socket: socket} do
