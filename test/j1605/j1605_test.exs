@@ -41,22 +41,22 @@ defmodule J1605.DeviceTest do
     end
 
     test "turns the relay on", %{socket: socket} do
-      assert Device.handle_cast({:on, 16}, %Device{socket: socket}) ==
+      assert Device.handle_cast({true, 16}, %Device{socket: socket}) ==
                {:noreply, %Device{socket: socket}}
     end
 
     test "turns the relay off", %{socket: socket} do
-      assert Device.handle_cast({:off, 16}, %Device{socket: socket}) ==
+      assert Device.handle_cast({false, 16}, %Device{socket: socket}) ==
                {:noreply, %Device{socket: socket}}
     end
 
     test "raises error if the number is abnormal", %{socket: socket} do
       assert_raise FunctionClauseError, fn ->
-        Device.handle_cast({:on, 17}, %Device{socket: socket})
+        Device.handle_cast({true, 17}, %Device{socket: socket})
       end
 
       assert_raise FunctionClauseError, fn ->
-        Device.handle_cast({:off, 17}, %Device{socket: socket})
+        Device.handle_cast({false, 17}, %Device{socket: socket})
       end
     end
 
