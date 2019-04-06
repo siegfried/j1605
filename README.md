@@ -38,13 +38,13 @@ Registry.register(J1605.Registry, "subscribers", nil)
   5. Turn on a switch:
 
 ```elixir
-J1605.Device.turn_on(0) // between 0 and 15
+J1605.Device.turn_on(0) # between 0 and 15
 ```
 
   6. Turn off a switch:
 
 ```elixir
-J1605.Device.turn_off(0) // between 0 and 15
+J1605.Device.turn_off(0) # between 0 and 15
 ```
 
   7. Update states:
