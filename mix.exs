@@ -33,7 +33,9 @@ defmodule J1605.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [
+      {:ex_doc, "~> 0.19", only: :dev, runtime: false}
+    ]
   end
 
   defp description() do
