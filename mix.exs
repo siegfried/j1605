@@ -16,7 +16,7 @@ defmodule J1605.Mixfile do
   #
   # Type "mix help compile.app" for more information
   def application do
-    [extra_applications: [:logger], mod: {J1605, []}]
+    [extra_applications: [], mod: {J1605, []}]
   end
 
   # Dependencies can be Hex packages:
