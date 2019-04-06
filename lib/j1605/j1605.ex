@@ -49,14 +49,13 @@ defmodule J1605.Device do
     end
   end
 
-  defp perform_switch(socket, value, number)
-       when is_integer(number) and number >= 1 and number <= 16 do
+  defp perform_switch(socket, value, number) when number in 0..15 do
     case value do
       true ->
-        :gen_tcp.send(socket, <<0x25, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, number - 1, 0x00>>)
+        :gen_tcp.send(socket, <<0x25, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, number, 0x00>>)
 
       false ->
-        :gen_tcp.send(socket, <<0x26, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, number - 1, 0x00>>)
+        :gen_tcp.send(socket, <<0x26, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00, number, 0x00>>)
     end
   end
 
