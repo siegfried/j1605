@@ -8,18 +8,6 @@ defmodule J1605.Device do
     GenServer.start_link(__MODULE__, arg, name: __MODULE__)
   end
 
-  def turn_on(number) do
-    GenServer.cast(__MODULE__, {true, number})
-  end
-
-  def turn_off(number) do
-    GenServer.cast(__MODULE__, {false, number})
-  end
-
-  def update_states do
-    GenServer.cast(__MODULE__, :states)
-  end
-
   @impl true
   def init({address, port}) do
     with {:ok, socket} <- :gen_tcp.connect(address, port, [:binary, active: true]) do
