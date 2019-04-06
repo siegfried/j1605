@@ -43,7 +43,7 @@ defmodule J1605.Mixfile do
   defp package() do
     [
       name: "j1605",
-      files: ~w(lib mix.exs README* readme* LICENSE* license*),
+      files: ~w(lib mix.exs README* LICENSE*),
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/siegfried/j1605"}
     ]
