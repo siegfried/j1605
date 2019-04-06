@@ -1,7 +1,7 @@
 defmodule RelayController.Supervisor do
   use Supervisor
 
-  alias RelayController.J1605
+  alias RelayController.Device
 
   def start_link(arg) do
     Supervisor.start_link(__MODULE__, arg, name: __MODULE__)
@@ -15,12 +15,12 @@ defmodule RelayController.Supervisor do
           []
 
         _ ->
-          with {:ok, config} <- Access.fetch(arg, :j1605),
+          with {:ok, config} <- Access.fetch(arg, :device),
                {:ok, address} <- Access.fetch(config, :address),
                {:ok, port} <- Access.fetch(config, :port),
                {:ok, address} <- parse_ipv4_address(address) do
             [
-              {J1605, {address, port}},
+              {Device, {address, port}},
               {Registry,
                keys: :duplicate,
                name: RelayController.Registry,
