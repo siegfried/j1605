@@ -9,7 +9,7 @@ by adding `j1605` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
-  [{:j1605, "~> 0.1.0"}]
+  [{:j1605, "~> 0.2.0"}]
 end
 ```
 
@@ -47,17 +47,17 @@ Registry.register(J1605.Registry, "subscribers", nil)
 3. Turn on a switch:
 
 ```elixir
-J1605.Device.turn_on(0) # between 0 and 15
+J1605.turn_on(0) # between 0 and 15
 ```
 
 4. Turn off a switch:
 
 ```elixir
-J1605.Device.turn_off(0) # between 0 and 15
+J1605.turn_off(0) # between 0 and 15
 ```
 
 5. Update states:
 
 ```elixir
-J1605.Device.update_states()
+J1605.update_states()
 ```
