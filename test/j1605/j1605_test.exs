@@ -99,7 +99,7 @@ defmodule J1605.DeviceTest do
                   socket: socket
                 }}
 
-      assert_received {:device,
+      assert_received {:states,
                        {true, true, false, false, false, false, false, false, true, false, false,
                         false, false, false, false, false}}
 
@@ -115,7 +115,7 @@ defmodule J1605.DeviceTest do
                   socket: socket
                 }}
 
-      assert_received {:device,
+      assert_received {:states,
                        {true, true, false, false, false, false, false, false, true, false, false,
                         false, false, false, false, false}}
     end

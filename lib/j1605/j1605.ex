@@ -76,7 +76,7 @@ defmodule J1605.Device do
           <<relay_bits::size(16)>> |> relay_bits_to_list |> Enum.reverse() |> List.to_tuple()
 
         Registry.dispatch(J1605.Registry, "subscribers", fn entries ->
-          Enum.each(entries, fn {pid, _} -> send(pid, {:device, relays}) end)
+          Enum.each(entries, fn {pid, _} -> send(pid, {:states, relays}) end)
         end)
 
         {:noreply, %{state | relays: relays}}
