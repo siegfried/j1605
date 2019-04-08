@@ -8,6 +8,7 @@ defmodule J1605.Mixfile do
       elixir: "~> 1.4",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
+      aliases: aliases(),
       description: description(),
       package: package(),
       deps: deps(),
@@ -48,6 +49,12 @@ defmodule J1605.Mixfile do
       files: ~w(lib mix.exs README* LICENSE*),
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/siegfried/j1605"}
+    ]
+  end
+
+  defp aliases do
+    [
+      test: "test --no-start"
     ]
   end
 end

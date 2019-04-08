@@ -9,25 +9,19 @@ defmodule J1605.Supervisor do
 
   @impl true
   def init(arg) do
-    children =
-      case Mix.env() do
-        :test ->
-          []
-
-        _ ->
-          with {:ok, config} <- Access.fetch(arg, :device),
-               {:ok, address} <- Access.fetch(config, :address),
-               {:ok, port} <- Access.fetch(config, :port),
-               {:ok, address} <- parse_ipv4_address(address) do
-            [
-              {Device, {address, port}},
-              {Registry,
-               keys: :duplicate, name: J1605.Registry, partitions: System.schedulers_online()}
-            ]
-          end
-      end
-
-    Supervisor.init(children, strategy: :one_for_one)
+    with {:ok, config} <- Access.fetch(arg, :device),
+         {:ok, address} <- Access.fetch(config, :address),
+         {:ok, port} <- Access.fetch(config, :port),
+         {:ok, address} <- parse_ipv4_address(address) do
+      Supervisor.init(
+        [
+          {Device, {address, port}},
+          {Registry,
+           keys: :duplicate, name: J1605.Registry, partitions: System.schedulers_online()}
+        ],
+        strategy: :one_for_one
+      )
+    end
   end
 
   defp parse_ipv4_address(address) when is_binary(address) do
