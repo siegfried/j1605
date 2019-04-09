@@ -2,16 +2,16 @@ defmodule J1605.Device do
   use GenServer
 
   @enforce_keys [:socket]
-  defstruct [:socket, relays: nil]
+  defstruct [:socket, :time_to_wait, relays: nil]
 
   def start_link(arg) do
     GenServer.start_link(__MODULE__, arg, name: __MODULE__)
   end
 
   @impl true
-  def init({address, port}) do
+  def init({address, port, time_to_wait}) do
     with {:ok, socket} <- :gen_tcp.connect(address, port, [:binary, active: true]) do
-      {:ok, %__MODULE__{socket: socket, relays: nil}}
+      {:ok, %__MODULE__{socket: socket, time_to_wait: time_to_wait, relays: nil}}
     else
       error -> {:stop, error}
     end
@@ -24,6 +24,11 @@ defmodule J1605.Device do
   @impl true
   def handle_cast(request, state = %{socket: socket}) do
     with :ok <- perform(socket, request) do
+      time = state.time_to_wait
+      if(is_integer(time)) do
+        Process.sleep(time)
+      end
+
       {:noreply, state}
     else
       {:error, reason} -> {:stop, reason, %{state | socket: nil}}

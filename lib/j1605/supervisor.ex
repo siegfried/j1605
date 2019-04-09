@@ -12,10 +12,11 @@ defmodule J1605.Supervisor do
     with {:ok, config} <- Access.fetch(arg, :device),
          {:ok, address} <- Access.fetch(config, :address),
          {:ok, port} <- Access.fetch(config, :port),
+         time_to_wait <- Access.get(config, :time_to_wait, 0),
          {:ok, address} <- parse_ipv4_address(address) do
       Supervisor.init(
         [
-          {Device, {address, port}},
+          {Device, {address, port, time_to_wait}},
           {Registry,
            keys: :duplicate, name: J1605.Registry, partitions: System.schedulers_online()}
         ],

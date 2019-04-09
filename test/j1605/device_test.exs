@@ -17,7 +17,7 @@ defmodule J1605.DeviceTest do
 
       Process.sleep(1000)
 
-      {:ok, state} = Device.init({{127, 0, 0, 1}, 2000})
+      {:ok, state} = Device.init({{127, 0, 0, 1}, 2000, 100})
       assert state.relays == nil
       assert is_port(state.socket)
     end
